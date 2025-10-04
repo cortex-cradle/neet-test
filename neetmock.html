@@ -1506,9 +1506,9 @@
     <div id="confetti" class="confetti"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        [
-          {
+        const neetQuestions = [
+      [
+        {
             "id": 1,
             "subject": "physics",
             "subjectName": "Physics",
@@ -5287,7 +5287,10 @@
               "Only sequence genomes"
             ],
             "correctAnswer": 3
-          }     
+          }
+        ]
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
             const userInfoModal = document.getElementById('userInfoModal');
             const testScreen = document.getElementById('testScreen');
             const countdownOverlay = document.getElementById('countdownOverlay');
@@ -5514,20 +5517,24 @@
                 }
             }
             
-            // Display question
+                       // Display question
             function displayQuestion(index) {
                 if (index < 0 || index >= filteredQuestions.length) return;
                 
                 const question = filteredQuestions[index];
                 currentQuestion.textContent = index + 1;
-                questionText.textContent = question.question;
+                
+                // Check language and display accordingly
+                const isHindi = hiBtn.classList.contains('active');
+                questionText.textContent = isHindi ? question.question_hi : question.question_en;
                 currentSubject.textContent = question.subjectName;
                 
                 // Clear options
                 optionsContainer.innerHTML = '';
                 
-                // Add options
-                question.options.forEach((option, i) => {
+                // Add options based on language
+                const options = isHindi ? question.options_hi : question.options_en;
+                options.forEach((option, i) => {
                     const optionElement = document.createElement('div');
                     optionElement.className = 'option';
                     if (userAnswers[question.id - 1] === i) {
@@ -5857,18 +5864,20 @@
                 });
             });
             
-            // Language toggle
-            enBtn.addEventListener('click', function() {
-                enBtn.classList.add('active');
-                hiBtn.classList.remove('active');
-                // In a real app, you would change the language here
-            });
-            
-            hiBtn.addEventListener('click', function() {
-                hiBtn.classList.add('active');
-                enBtn.classList.remove('active');
-                // In a real app, you would change the language here
-            });
+                    // Language toggle
+        enBtn.addEventListener('click', function() {
+            enBtn.classList.add('active');
+            hiBtn.classList.remove('active');
+            // Refresh current question with English
+            displayQuestion(currentQuestionIndex);
+        });
+        
+        hiBtn.addEventListener('click', function() {
+            hiBtn.classList.add('active');
+            enBtn.classList.remove('active');
+            // Refresh current question with Hindi
+            displayQuestion(currentQuestionIndex);
+        });
             
             // Initialize the app
             initializeTestData();
