@@ -5363,47 +5363,50 @@ const uploadedJSON = {
             let filteredQuestions = [];
             let currentFilter = 'all';
             
-            // Initialize test data
-            function initializeTestData() {
-                // Generate mock test data
-                const subjects = ['physics', 'chemistry', 'botany', 'zoology'];
-                const subjectNames = {
-                    'physics': 'Physics',
-                    'chemistry': 'Chemistry',
-                    'botany': 'Botany',
-                    'zoology': 'Zoology'
-                };
-                
-                for (let i = 0; i < 180; i++) {
-                    const subject = subjects[Math.floor(i / 45)];
-                    testData.push({
-                        id: i + 1,
-                        subject: subject,
-                        subjectName: subjectNames[subject],
-                        question: `This is a sample question for ${subjectNames[subject]}. Which of the following options is correct?`,
-                        options: [
-                            'Option A',
-                            'Option B',
-                            'Option C',
-                            'Option D'
-                        ],
-                        correctAnswer: Math.floor(Math.random() * 4)
-                    });
-                }
-                
-                filteredQuestions = [...testData];
+                    // Initialize test data
+        function initializeTestData() {
+            // Create demo questions for testing
+            testData = [];
+            const subjects = ['physics', 'chemistry', 'botany', 'zoology'];
+            const subjectNames = {
+                'physics': 'Physics',
+                'chemistry': 'Chemistry', 
+                'botany': 'Botany',
+                'zoology': 'Zoology'
+            };
+            
+            for (let i = 0; i < 180; i++) {
+                const subject = subjects[Math.floor(i / 45)];
+                testData.push({
+                    id: i + 1,
+                    subject: subject,
+                    subjectName: subjectNames[subject],
+                    question_en: `Sample question ${i+1} for ${subjectNames[subject]}. What is the correct answer?`,
+                    question_hi: `सैंपल प्रश्न ${i+1} for ${subjectNames[subject]}. सही उत्तर क्या है?`,
+                    options_en: ['Option A', 'Option B', 'Option C', 'Option D'],
+                    options_hi: ['विकल्प A', 'विकल्प B', 'विकल्प C', 'विकल्प D'],
+                    correctAnswer: Math.floor(Math.random() * 4)
+                });
             }
             
-            // Start the test
-            function startTest() {
-                if (!userName.value.trim()) {
-                    userName.classList.add('highlight');
-                    setTimeout(() => {
-                        userName.classList.remove('highlight');
-                    }, 1500);
-                    return;
-                }
-                
+            filteredQuestions = [...testData];
+            console.log('Test data initialized with', testData.length, 'questions');
+        }
+            
+                 // Start the test
+        function startTest() {
+            console.log('Start test clicked');
+            
+            if (!userName.value.trim()) {
+                userName.classList.add('highlight');
+                setTimeout(() => {
+                    userName.classList.remove('highlight');
+                }, 1500);
+                alert('Please enter your name');
+                return;
+            }
+            
+            try {
                 // Store user info
                 userNameDisplay.textContent = userName.value;
                 userDetailsDisplay.textContent = userStream.value || 'PCMB';
@@ -5430,12 +5433,16 @@ const uploadedJSON = {
                         
                         // Add event listeners to prevent navigation
                         setupNavigationPrevention();
+                        console.log('Test started successfully');
                     }
                     
                     countdown--;
                 }, 1000);
+            } catch (error) {
+                console.error('Error starting test:', error);
+                alert('Error starting test: ' + error.message);
             }
-            
+        }
             // Setup navigation prevention
             function setupNavigationPrevention() {
                 // Prevent refresh
