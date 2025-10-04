@@ -1505,12 +1505,9 @@
     <!-- Confetti Container -->
     <div id="confetti" class="confetti"></div>
 
-   <script>
-// ==================== PASTE YOUR 180 QUESTIONS HERE ====================
-const neetQuestions = [
-  // YAHI PASTE KARO APNE 180 QUESTIONS
-  // Example:
-  {
+    <script>
+        const neetQuestions = [
+         {
     "id": 1,
     "subject": "physics",
     "subjectName": "Physics",
@@ -5290,594 +5287,608 @@ const neetQuestions = [
     ],
     "correctAnswer": 1
   }
-
-  // ... continue for all 180 questions
-];
-// ==================== END OF QUESTIONS ====================
-
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements (same as before)
-    const userInfoModal = document.getElementById('userInfoModal');
-    const testScreen = document.getElementById('testScreen');
-    const countdownOverlay = document.getElementById('countdownOverlay');
-    const navigationWarning = document.getElementById('navigationWarning');
-    const confirmationModal = document.getElementById('confirmationModal');
-    const resultsModal = document.getElementById('resultsModal');
-    const userName = document.getElementById('userName');
-    const userStream = document.getElementById('userStream');
-    const streamSuggestion = document.getElementById('streamSuggestion');
-    const startTestBtn = document.getElementById('startTestBtn');
-    const finishTestBtn = document.getElementById('finishTestBtn');
-    const confirmFinish = document.getElementById('confirmFinish');
-    const cancelFinish = document.getElementById('cancelFinish');
-    const userNameDisplay = document.getElementById('userNameDisplay');
-    const userDetailsDisplay = document.getElementById('userDetailsDisplay');
-    const currentQuestion = document.getElementById('currentQuestion');
-    const questionText = document.getElementById('questionText');
-    const optionsContainer = document.getElementById('optionsContainer');
-    const questionGrid = document.getElementById('questionGrid');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const timer = document.getElementById('timer');
-    const attemptedCount = document.getElementById('attemptedCount');
-    const skippedCountDisplay = document.getElementById('skippedCountDisplay');
-    const currentSubject = document.getElementById('currentSubject');
-    const subjectBtns = document.querySelectorAll('.subject-btn');
-    const enBtn = document.getElementById('enBtn');
-    const hiBtn = document.getElementById('hiBtn');
-    const suggestionBtns = document.querySelectorAll('.suggestion-btn');
-    
-    // Share buttons
-    const shareWhatsApp = document.getElementById('shareWhatsApp');
-    const shareTelegram = document.getElementById('shareTelegram');
-    const shareSnapchat = document.getElementById('shareSnapchat');
-    const shareNative = document.getElementById('shareNative');
-    
-    // Results elements
-    const finalScore = document.getElementById('finalScore');
-    const correctCount = document.getElementById('correctCount');
-    const incorrectCount = document.getElementById('incorrectCount');
-    const skippedCount = document.getElementById('skippedCount');
-    const accuracyValue = document.getElementById('accuracyValue');
-    const physicsProgress = document.getElementById('physicsProgress');
-    const chemistryProgress = document.getElementById('chemistryProgress');
-    const botanyProgress = document.getElementById('botanyProgress');
-    const zoologyProgress = document.getElementById('zoologyProgress');
-    const physicsTime = document.getElementById('physicsTime');
-    const chemistryTime = document.getElementById('chemistryTime');
-    const botanyTime = document.getElementById('botanyTime');
-    const zoologyTime = document.getElementById('zoologyTime');
-    const physicsAccuracy = document.getElementById('physicsAccuracy');
-    const chemistryAccuracy = document.getElementById('chemistryAccuracy');
-    const botanyAccuracy = document.getElementById('botanyAccuracy');
-    const zoologyAccuracy = document.getElementById('zoologyAccuracy');
-    
-    // Test state variables
-    let testStarted = false;
-    let currentQuestionIndex = 0;
-    let userAnswers = Array(180).fill(null);
-    let questionStatus = Array(180).fill('unanswered');
-    let timeLeft = 3 * 60 * 60;
-    let timerInterval;
-    let testData = [];
-    let filteredQuestions = [];
-    let currentFilter = 'all';
-    
-    // Initialize test data WITH YOUR QUESTIONS
-    function initializeTestData() {
-        testData = neetQuestions; // YOUR QUESTIONS WILL BE USED HERE
-        filteredQuestions = [...testData];
-        console.log('Test data loaded with', testData.length, 'questions');
-    }
-    
-    // Display question (UPDATED FOR BILINGUAL SUPPORT)
-    function displayQuestion(index) {
-        if (index < 0 || index >= filteredQuestions.length) return;
-        
-        const question = filteredQuestions[index];
-        currentQuestion.textContent = index + 1;
-        
-        // Check language and display accordingly
-        const isHindi = hiBtn.classList.contains('active');
-        questionText.textContent = isHindi ? question.question_hi : question.question_en;
-        currentSubject.textContent = question.subjectName;
-        
-        // Clear options
-        optionsContainer.innerHTML = '';
-        
-        // Add options based on language
-        const options = isHindi ? question.options_hi : question.options_en;
-        options.forEach((option, i) => {
-            const optionElement = document.createElement('div');
-            optionElement.className = 'option';
-            if (userAnswers[question.id - 1] === i) {
-                optionElement.classList.add('selected');
-            }
-            optionElement.textContent = option;
-            optionElement.addEventListener('click', () => selectOption(i));
-            optionsContainer.appendChild(optionElement);
-        });
-        
-        // Update navigation buttons
-        prevBtn.disabled = index === 0;
-        nextBtn.disabled = index === filteredQuestions.length - 1;
-        
-        // Update question grid highlight
-        updateQuestionGrid();
-    }
-    
-    // Start the test
-    function startTest() {
-        if (!userName.value.trim()) {
-            userName.classList.add('highlight');
-            setTimeout(() => {
-                userName.classList.remove('highlight');
-            }, 1500);
-            return;
-        }
-        
-        // Store user info
-        userNameDisplay.textContent = userName.value;
-        userDetailsDisplay.textContent = userStream.value || 'PCMB';
-        
-        // Show countdown
-        userInfoModal.classList.remove('active');
-        countdownOverlay.classList.add('active');
-        
-        let countdown = 3;
-        const countdownNumber = document.querySelector('.countdown-number');
-        
-        const countdownInterval = setInterval(() => {
-            countdownNumber.textContent = countdown;
+ 
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const userInfoModal = document.getElementById('userInfoModal');
+            const testScreen = document.getElementById('testScreen');
+            const countdownOverlay = document.getElementById('countdownOverlay');
+            const navigationWarning = document.getElementById('navigationWarning');
+            const confirmationModal = document.getElementById('confirmationModal');
+            const resultsModal = document.getElementById('resultsModal');
+            const userName = document.getElementById('userName');
+            const userStream = document.getElementById('userStream');
+            const streamSuggestion = document.getElementById('streamSuggestion');
+            const startTestBtn = document.getElementById('startTestBtn');
+            const finishTestBtn = document.getElementById('finishTestBtn');
+            const confirmFinish = document.getElementById('confirmFinish');
+            const cancelFinish = document.getElementById('cancelFinish');
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const userDetailsDisplay = document.getElementById('userDetailsDisplay');
+            const currentQuestion = document.getElementById('currentQuestion');
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const questionGrid = document.getElementById('questionGrid');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const timer = document.getElementById('timer');
+            const attemptedCount = document.getElementById('attemptedCount');
+            const skippedCountDisplay = document.getElementById('skippedCountDisplay');
+            const currentSubject = document.getElementById('currentSubject');
+            const subjectBtns = document.querySelectorAll('.subject-btn');
+            const enBtn = document.getElementById('enBtn');
+            const hiBtn = document.getElementById('hiBtn');
+            const suggestionBtns = document.querySelectorAll('.suggestion-btn');
             
-            if (countdown === 0) {
-                clearInterval(countdownInterval);
-                countdownOverlay.classList.remove('active');
-                testScreen.classList.remove('hidden');
-                startTimer();
-                testStarted = true;
+            // Share buttons
+            const shareWhatsApp = document.getElementById('shareWhatsApp');
+            const shareTelegram = document.getElementById('shareTelegram');
+            const shareSnapchat = document.getElementById('shareSnapchat');
+            const shareNative = document.getElementById('shareNative');
+            
+            // Results elements
+            const finalScore = document.getElementById('finalScore');
+            const correctCount = document.getElementById('correctCount');
+            const incorrectCount = document.getElementById('incorrectCount');
+            const skippedCount = document.getElementById('skippedCount');
+            const accuracyValue = document.getElementById('accuracyValue');
+            const physicsProgress = document.getElementById('physicsProgress');
+            const chemistryProgress = document.getElementById('chemistryProgress');
+            const botanyProgress = document.getElementById('botanyProgress');
+            const zoologyProgress = document.getElementById('zoologyProgress');
+            const physicsTime = document.getElementById('physicsTime');
+            const chemistryTime = document.getElementById('chemistryTime');
+            const botanyTime = document.getElementById('botanyTime');
+            const zoologyTime = document.getElementById('zoologyTime');
+            const physicsAccuracy = document.getElementById('physicsAccuracy');
+            const chemistryAccuracy = document.getElementById('chemistryAccuracy');
+            const botanyAccuracy = document.getElementById('botanyAccuracy');
+            const zoologyAccuracy = document.getElementById('zoologyAccuracy');
+            
+            // Test state variables
+            let testStarted = false;
+            let currentQuestionIndex = 0;
+            let userAnswers = Array(180).fill(null);
+            let questionStatus = Array(180).fill('unanswered'); // 'unanswered', 'answered', 'skipped'
+            let timeLeft = 3 * 60 * 60; // 3 hours in seconds
+            let timerInterval;
+            let testData = [];
+            let filteredQuestions = [];
+            let currentFilter = 'all';
+            
+            // Initialize test data
+            function initializeTestData() {
+                // Generate mock test data
+                const subjects = ['physics', 'chemistry', 'botany', 'zoology'];
+                const subjectNames = {
+                    'physics': 'Physics',
+                    'chemistry': 'Chemistry',
+                    'botany': 'Botany',
+                    'zoology': 'Zoology'
+                };
+                
+                for (let i = 0; i < 180; i++) {
+                    const subject = subjects[Math.floor(i / 45)];
+                    testData.push({
+                        id: i + 1,
+                        subject: subject,
+                        subjectName: subjectNames[subject],
+                        question: `This is a sample question for ${subjectNames[subject]}. Which of the following options is correct?`,
+                        options: [
+                            'Option A',
+                            'Option B',
+                            'Option C',
+                            'Option D'
+                        ],
+                        correctAnswer: Math.floor(Math.random() * 4)
+                    });
+                }
+                
+                filteredQuestions = [...testData];
+            }
+            
+            // Start the test
+            function startTest() {
+                if (!userName.value.trim()) {
+                    userName.classList.add('highlight');
+                    setTimeout(() => {
+                        userName.classList.remove('highlight');
+                    }, 1500);
+                    return;
+                }
+                
+                // Store user info
+                userNameDisplay.textContent = userName.value;
+                userDetailsDisplay.textContent = userStream.value || 'PCMB';
+                
+                // Show countdown
+                userInfoModal.classList.remove('active');
+                countdownOverlay.classList.add('active');
+                
+                let countdown = 3;
+                const countdownNumber = document.querySelector('.countdown-number');
+                
+                const countdownInterval = setInterval(() => {
+                    countdownNumber.textContent = countdown;
+                    
+                    if (countdown === 0) {
+                        clearInterval(countdownInterval);
+                        countdownOverlay.classList.remove('active');
+                        testScreen.classList.remove('hidden');
+                        startTimer();
+                        testStarted = true;
+                        displayQuestion(currentQuestionIndex);
+                        updateQuestionGrid();
+                        updateProgress();
+                        
+                        // Add event listeners to prevent navigation
+                        setupNavigationPrevention();
+                    }
+                    
+                    countdown--;
+                }, 1000);
+            }
+            
+            // Setup navigation prevention
+            function setupNavigationPrevention() {
+                // Prevent refresh
+                window.addEventListener('beforeunload', function(e) {
+                    if (testStarted) {
+                        e.preventDefault();
+                        e.returnValue = '';
+                        showNavigationWarning();
+                        return '';
+                    }
+                });
+                
+                // Prevent back button
+                window.addEventListener('popstate', function(e) {
+                    if (testStarted) {
+                        history.pushState(null, null, window.location.href);
+                        showNavigationWarning();
+                    }
+                });
+                
+                // Prevent scroll refresh on mobile
+                let touchStartY = 0;
+                document.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: true });
+                
+                document.addEventListener('touchmove', function(e) {
+                    const touchY = e.touches[0].clientY;
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // If at the top and pulling down, prevent default to avoid refresh
+                    if (scrollTop === 0 && touchY > touchStartY + 10) {
+                        e.preventDefault();
+                        showNavigationWarning();
+                    }
+                }, { passive: false });
+                
+                // Also prevent pull-to-refresh with CSS
+                document.body.style.overscrollBehavior = 'none';
+            }
+            
+            // Show navigation warning
+            function showNavigationWarning() {
+                if (testStarted) {
+                    navigationWarning.classList.add('active');
+                    
+                    // Start the reject face animation
+                    const warningIcon = document.querySelector('.warning-icon');
+                    warningIcon.style.animation = 'shake 0.5s ease-in-out 3, scale 0.3s ease-in-out 3';
+                    
+                    // Auto hide after 4 seconds (3s animation + 1s pause)
+                    setTimeout(() => {
+                        navigationWarning.classList.remove('active');
+                    }, 4000);
+                }
+            }
+            
+            // Start the timer
+            function startTimer() {
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        finishTest();
+                    }
+                    
+                    updateTimerDisplay();
+                }, 1000);
+            }
+            
+            // Update timer display
+            function updateTimerDisplay() {
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                
+                timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Change color when time is running out
+                if (timeLeft < 300) { // 5 minutes
+                    timer.style.background = 'linear-gradient(90deg, #ff6b6b, #ff9e7b)';
+                } else if (timeLeft < 600) { // 10 minutes
+                    timer.style.background = 'linear-gradient(90deg, #ffd166, #ff9e7b)';
+                }
+            }
+            
+            // Display question
+            function displayQuestion(index) {
+                if (index < 0 || index >= filteredQuestions.length) return;
+                
+                const question = filteredQuestions[index];
+                currentQuestion.textContent = index + 1;
+                questionText.textContent = question.question;
+                currentSubject.textContent = question.subjectName;
+                
+                // Clear options
+                optionsContainer.innerHTML = '';
+                
+                // Add options
+                question.options.forEach((option, i) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    if (userAnswers[question.id - 1] === i) {
+                        optionElement.classList.add('selected');
+                    }
+                    optionElement.textContent = option;
+                    optionElement.addEventListener('click', () => selectOption(i));
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                // Update navigation buttons
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === filteredQuestions.length - 1;
+                
+                // Update question grid highlight
+                updateQuestionGrid();
+            }
+            
+            // Select option
+            function selectOption(optionIndex) {
+                const questionId = filteredQuestions[currentQuestionIndex].id - 1;
+                userAnswers[questionId] = optionIndex;
+                questionStatus[questionId] = 'answered';
+                
+                // Update UI
+                const options = document.querySelectorAll('.option');
+                options.forEach(option => option.classList.remove('selected'));
+                options[optionIndex].classList.add('selected');
+                
+                updateProgress();
+                updateQuestionGrid();
+            }
+            
+            // Update progress
+            function updateProgress() {
+                const answered = userAnswers.filter(answer => answer !== null).length;
+                const skipped = questionStatus.filter(status => status === 'skipped').length;
+                
+                attemptedCount.textContent = answered;
+                skippedCountDisplay.textContent = skipped;
+            }
+            
+            // Update question grid
+            function updateQuestionGrid() {
+                questionGrid.innerHTML = '';
+                
+                filteredQuestions.forEach((question, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'grid-btn';
+                    button.textContent = index + 1;
+                    
+                    if (questionStatus[question.id - 1] === 'answered') {
+                        button.classList.add('answered');
+                    } else if (questionStatus[question.id - 1] === 'skipped') {
+                        button.classList.add('skipped');
+                    }
+                    
+                    if (index === currentQuestionIndex) {
+                        button.classList.add('current');
+                    }
+                    
+                    button.addEventListener('click', () => {
+                        currentQuestionIndex = index;
+                        displayQuestion(currentQuestionIndex);
+                    });
+                    
+                    questionGrid.appendChild(button);
+                });
+            }
+            
+            // Navigate to next question
+            function nextQuestion() {
+                if (currentQuestionIndex < filteredQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion(currentQuestionIndex);
+                }
+            }
+            
+            // Navigate to previous question
+            function prevQuestion() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    displayQuestion(currentQuestionIndex);
+                }
+            }
+            
+            // Mark question as skipped
+            function markAsSkipped() {
+                const questionId = filteredQuestions[currentQuestionIndex].id - 1;
+                questionStatus[questionId] = 'skipped';
+                updateProgress();
+                updateQuestionGrid();
+                nextQuestion();
+            }
+            
+            // Finish test
+            function finishTest() {
+                clearInterval(timerInterval);
+                testStarted = false;
+                testScreen.classList.add('hidden');
+                showResults();
+            }
+            
+            // Show results
+            function showResults() {
+                // Calculate scores
+                let correct = 0;
+                let incorrect = 0;
+                let skipped = 0;
+                
+                const subjectStats = {
+                    physics: { correct: 0, total: 0 },
+                    chemistry: { correct: 0, total: 0 },
+                    botany: { correct: 0, total: 0 },
+                    zoology: { correct: 0, total: 0 }
+                };
+                
+                testData.forEach((question, index) => {
+                    subjectStats[question.subject].total++;
+                    
+                    if (userAnswers[index] === null) {
+                        skipped++;
+                        return;
+                    }
+                    
+                    if (userAnswers[index] === question.correctAnswer) {
+                        correct++;
+                        subjectStats[question.subject].correct++;
+                    } else {
+                        incorrect++;
+                    }
+                });
+                
+                const score = correct * 4; // 4 marks per correct answer
+                const accuracy = correct + incorrect > 0 ? Math.round((correct / (correct + incorrect)) * 100) : 0;
+                
+                // Update results UI
+                finalScore.textContent = score;
+                correctCount.textContent = correct;
+                incorrectCount.textContent = incorrect;
+                skippedCount.textContent = skipped;
+                accuracyValue.textContent = `${accuracy}%`;
+                
+                // Update subject progress bars
+                physicsProgress.style.width = `${(subjectStats.physics.correct / 45) * 100}%`;
+                chemistryProgress.style.width = `${(subjectStats.chemistry.correct / 45) * 100}%`;
+                botanyProgress.style.width = `${(subjectStats.botany.correct / 45) * 100}%`;
+                zoologyProgress.style.width = `${(subjectStats.zoology.correct / 45) * 100}%`;
+                
+                // Update chart bars with animation
+                setTimeout(() => {
+                    physicsTime.style.height = '70%';
+                    chemistryTime.style.height = '65%';
+                    botanyTime.style.height = '80%';
+                    zoologyTime.style.height = '75%';
+                    
+                    physicsAccuracy.style.height = `${(subjectStats.physics.correct / 45) * 100}%`;
+                    chemistryAccuracy.style.height = `${(subjectStats.chemistry.correct / 45) * 100}%`;
+                    botanyAccuracy.style.height = `${(subjectStats.botany.correct / 45) * 100}%`;
+                    zoologyAccuracy.style.height = `${(subjectStats.zoology.correct / 45) * 100}%`;
+                }, 500);
+                
+                // Update score circle
+                const scorePercentage = (score / 720) * 100;
+                document.getElementById('scoreCircle').style.background = `conic-gradient(var(--accent-1) ${scorePercentage}%, var(--accent-2) ${scorePercentage}%)`;
+                
+                // Show results modal
+                resultsModal.classList.add('active');
+                
+                // Create confetti
+                createConfetti();
+            }
+            
+            // Create confetti effect
+            function createConfetti() {
+                const confettiContainer = document.getElementById('confetti');
+                const colors = ['#b9a3ff', '#d9b7ff', '#ff9e7b', '#ffd166', '#4ade80'];
+                
+                for (let i = 0; i < 150; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'absolute';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.top = '-10px';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.opacity = Math.random();
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    
+                    confettiContainer.appendChild(confetti);
+                    
+                    // Animate confetti
+                    const animation = confetti.animate([
+                        { top: '-10px', transform: `rotate(0deg)` },
+                        { top: '100vh', transform: `rotate(${Math.random() * 360}deg)` }
+                    ], {
+                        duration: Math.random() * 3000 + 2000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+                    });
+                    
+                    animation.onfinish = () => {
+                        confetti.remove();
+                    };
+                }
+            }
+            
+            // Share functions
+            function shareToWhatsApp() {
+                const score = finalScore.textContent;
+                const text = `I scored ${score}/720 in my NEET mock test! 🎉 Check out NEET Prep for your own test.`;
+                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+            }
+            
+            function shareToTelegram() {
+                const score = finalScore.textContent;
+                const text = `I scored ${score}/720 in my NEET mock test! 🎉 Check out NEET Prep for your own test.`;
+                const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+            }
+            
+            function shareToSnapchat() {
+                // Note: Snapchat doesn't have a direct share API, so we'll use a fallback
+                const score = finalScore.textContent;
+                const text = `I scored ${score}/720 in my NEET mock test! 🎉`;
+                alert(`Share this text on Snapchat:\n\n${text}`);
+            }
+            
+            function nativeShare() {
+                const score = finalScore.textContent;
+                const text = `I scored ${score}/720 in my NEET mock test! 🎉 Check out NEET Prep for your own test.`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'My NEET Test Results',
+                        text: text,
+                        url: window.location.href
+                    })
+                    .catch(err => console.log('Error sharing:', err));
+                } else {
+                    // Fallback for browsers that don't support Web Share API
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text + ' ' + window.location.href;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Results copied to clipboard!');
+                }
+            }
+            
+            // Filter questions by subject
+            function filterQuestions(subject) {
+                currentFilter = subject;
+                
+                if (subject === 'all') {
+                    filteredQuestions = [...testData];
+                } else {
+                    filteredQuestions = testData.filter(q => q.subject === subject);
+                }
+                
+                currentQuestionIndex = 0;
                 displayQuestion(currentQuestionIndex);
                 updateQuestionGrid();
-                updateProgress();
                 
-                // Add event listeners to prevent navigation
-                setupNavigationPrevention();
+                // Update active subject button
+                subjectBtns.forEach(btn => {
+                    if (btn.dataset.subject === subject) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
             }
             
-            countdown--;
-        }, 1000);
-    }
-    
-    // Setup navigation prevention
-    function setupNavigationPrevention() {
-        // Prevent refresh
-        window.addEventListener('beforeunload', function(e) {
-            if (testStarted) {
-                e.preventDefault();
-                e.returnValue = '';
-                showNavigationWarning();
-                return '';
-            }
-        });
-        
-        // Prevent back button
-        window.addEventListener('popstate', function(e) {
-            if (testStarted) {
-                history.pushState(null, null, window.location.href);
-                showNavigationWarning();
-            }
-        });
-        
-        // Prevent scroll refresh on mobile
-        let touchStartY = 0;
-        document.addEventListener('touchstart', function(e) {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-        
-        document.addEventListener('touchmove', function(e) {
-            const touchY = e.touches[0].clientY;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            // Event Listeners
+            startTestBtn.addEventListener('click', startTest);
             
-            // If at the top and pulling down, prevent default to avoid refresh
-            if (scrollTop === 0 && touchY > touchStartY + 10) {
-                e.preventDefault();
-                showNavigationWarning();
-            }
-        }, { passive: false });
-        
-        // Also prevent pull-to-refresh with CSS
-        document.body.style.overscrollBehavior = 'none';
-    }
-    
-    // Show navigation warning
-    function showNavigationWarning() {
-        if (testStarted) {
-            navigationWarning.classList.add('active');
-            
-            // Start the reject face animation
-            const warningIcon = document.querySelector('.warning-icon');
-            warningIcon.style.animation = 'shake 0.5s ease-in-out 3, scale 0.3s ease-in-out 3';
-            
-            // Auto hide after 4 seconds (3s animation + 1s pause)
-            setTimeout(() => {
-                navigationWarning.classList.remove('active');
-            }, 4000);
-        }
-    }
-    
-    // Start the timer
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                finishTest();
-            }
-            
-            updateTimerDisplay();
-        }, 1000);
-    }
-    
-    // Update timer display
-    function updateTimerDisplay() {
-        const hours = Math.floor(timeLeft / 3600);
-        const minutes = Math.floor((timeLeft % 3600) / 60);
-        const seconds = timeLeft % 60;
-        
-        timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
-        // Change color when time is running out
-        if (timeLeft < 300) { // 5 minutes
-            timer.style.background = 'linear-gradient(90deg, #ff6b6b, #ff9e7b)';
-        } else if (timeLeft < 600) { // 10 minutes
-            timer.style.background = 'linear-gradient(90deg, #ffd166, #ff9e7b)';
-        }
-    }
-    
-    // Select option
-    function selectOption(optionIndex) {
-        const questionId = filteredQuestions[currentQuestionIndex].id - 1;
-        userAnswers[questionId] = optionIndex;
-        questionStatus[questionId] = 'answered';
-        
-        // Update UI
-        const options = document.querySelectorAll('.option');
-        options.forEach(option => option.classList.remove('selected'));
-        options[optionIndex].classList.add('selected');
-        
-        updateProgress();
-        updateQuestionGrid();
-    }
-    
-    // Update progress
-    function updateProgress() {
-        const answered = userAnswers.filter(answer => answer !== null).length;
-        const skipped = questionStatus.filter(status => status === 'skipped').length;
-        
-        attemptedCount.textContent = answered;
-        skippedCountDisplay.textContent = skipped;
-    }
-    
-    // Update question grid
-    function updateQuestionGrid() {
-        questionGrid.innerHTML = '';
-        
-        filteredQuestions.forEach((question, index) => {
-            const button = document.createElement('button');
-            button.className = 'grid-btn';
-            button.textContent = index + 1;
-            
-            if (questionStatus[question.id - 1] === 'answered') {
-                button.classList.add('answered');
-            } else if (questionStatus[question.id - 1] === 'skipped') {
-                button.classList.add('skipped');
-            }
-            
-            if (index === currentQuestionIndex) {
-                button.classList.add('current');
-            }
-            
-            button.addEventListener('click', () => {
-                currentQuestionIndex = index;
-                displayQuestion(currentQuestionIndex);
+            finishTestBtn.addEventListener('click', () => {
+                confirmationModal.classList.add('active');
             });
             
-            questionGrid.appendChild(button);
-        });
-    }
-    
-    // Navigate to next question
-    function nextQuestion() {
-        if (currentQuestionIndex < filteredQuestions.length - 1) {
-            currentQuestionIndex++;
-            displayQuestion(currentQuestionIndex);
-        }
-    }
-    
-    // Navigate to previous question
-    function prevQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            displayQuestion(currentQuestionIndex);
-        }
-    }
-    
-    // Mark question as skipped
-    function markAsSkipped() {
-        const questionId = filteredQuestions[currentQuestionIndex].id - 1;
-        questionStatus[questionId] = 'skipped';
-        updateProgress();
-        updateQuestionGrid();
-        nextQuestion();
-    }
-    
-    // Finish test
-    function finishTest() {
-        clearInterval(timerInterval);
-        testStarted = false;
-        testScreen.classList.add('hidden');
-        showResults();
-    }
-    
-    // Show results
-    function showResults() {
-        // Calculate scores
-        let correct = 0;
-        let incorrect = 0;
-        let skipped = 0;
-        
-        const subjectStats = {
-            physics: { correct: 0, total: 0 },
-            chemistry: { correct: 0, total: 0 },
-            botany: { correct: 0, total: 0 },
-            zoology: { correct: 0, total: 0 }
-        };
-        
-        testData.forEach((question, index) => {
-            subjectStats[question.subject].total++;
+            confirmFinish.addEventListener('click', finishTest);
             
-            if (userAnswers[index] === null) {
-                skipped++;
-                return;
-            }
-            
-            if (userAnswers[index] === question.correctAnswer) {
-                correct++;
-                subjectStats[question.subject].correct++;
-            } else {
-                incorrect++;
-            }
-        });
-        
-        const score = correct * 4; // 4 marks per correct answer
-        const accuracy = correct + incorrect > 0 ? Math.round((correct / (correct + incorrect)) * 100) : 0;
-        
-        // Update results UI
-        finalScore.textContent = score;
-        correctCount.textContent = correct;
-        incorrectCount.textContent = incorrect;
-        skippedCount.textContent = skipped;
-        accuracyValue.textContent = `${accuracy}%`;
-        
-        // Update subject progress bars
-        physicsProgress.style.width = `${(subjectStats.physics.correct / 45) * 100}%`;
-        chemistryProgress.style.width = `${(subjectStats.chemistry.correct / 45) * 100}%`;
-        botanyProgress.style.width = `${(subjectStats.botany.correct / 45) * 100}%`;
-        zoologyProgress.style.width = `${(subjectStats.zoology.correct / 45) * 100}%`;
-        
-        // Update chart bars with animation
-        setTimeout(() => {
-            physicsTime.style.height = '70%';
-            chemistryTime.style.height = '65%';
-            botanyTime.style.height = '80%';
-            zoologyTime.style.height = '75%';
-            
-            physicsAccuracy.style.height = `${(subjectStats.physics.correct / 45) * 100}%`;
-            chemistryAccuracy.style.height = `${(subjectStats.chemistry.correct / 45) * 100}%`;
-            botanyAccuracy.style.height = `${(subjectStats.botany.correct / 45) * 100}%`;
-            zoologyAccuracy.style.height = `${(subjectStats.zoology.correct / 45) * 100}%`;
-        }, 500);
-        
-        // Update score circle
-        const scorePercentage = (score / 720) * 100;
-        document.getElementById('scoreCircle').style.background = `conic-gradient(var(--accent-1) ${scorePercentage}%, var(--accent-2) ${scorePercentage}%)`;
-        
-        // Show results modal
-        resultsModal.classList.add('active');
-        
-        // Create confetti
-        createConfetti();
-    }
-    
-    // Create confetti effect
-    function createConfetti() {
-        const confettiContainer = document.getElementById('confetti');
-        const colors = ['#b9a3ff', '#d9b7ff', '#ff9e7b', '#ffd166', '#4ade80'];
-        
-        for (let i = 0; i < 150; i++) {
-            const confetti = document.createElement('div');
-            confetti.style.position = 'absolute';
-            confetti.style.width = Math.random() * 10 + 5 + 'px';
-            confetti.style.height = Math.random() * 10 + 5 + 'px';
-            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.top = '-10px';
-            confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.opacity = Math.random();
-            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-            
-            confettiContainer.appendChild(confetti);
-            
-            // Animate confetti
-            const animation = confetti.animate([
-                { top: '-10px', transform: `rotate(0deg)` },
-                { top: '100vh', transform: `rotate(${Math.random() * 360}deg)` }
-            ], {
-                duration: Math.random() * 3000 + 2000,
-                easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+            cancelFinish.addEventListener('click', () => {
+                confirmationModal.classList.remove('active');
             });
             
-            animation.onfinish = () => {
-                confetti.remove();
-            };
-        }
-    }
-    
-    // Share functions
-    function shareToWhatsApp() {
-        const score = finalScore.textContent;
-        const text = `I scored ${score}/720 in my NEET mock test! 🎉 Check out NEET Prep for your own test.`;
-        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-        window.open(url, '_blank');
-    }
-    
-    function shareToTelegram() {
-        const score = finalScore.textContent;
-        const text = `I scored ${score}/720 in my NEET mock test! 🎉 Check out NEET Prep for your own test.`;
-        const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
-        window.open(url, '_blank');
-    }
-    
-    function shareToSnapchat() {
-        // Note: Snapchat doesn't have a direct share API, so we'll use a fallback
-        const score = finalScore.textContent;
-        const text = `I scored ${score}/720 in my NEET mock test! 🎉`;
-        alert(`Share this text on Snapchat:\n\n${text}`);
-    }
-    
-    function nativeShare() {
-        const score = finalScore.textContent;
-        const text = `I scored ${score}/720 in my NEET mock test! 🎉 Check out NEET Prep for your own test.`;
-        
-        if (navigator.share) {
-            navigator.share({
-                title: 'My NEET Test Results',
-                text: text,
-                url: window.location.href
-            })
-            .catch(err => console.log('Error sharing:', err));
-        } else {
-            // Fallback for browsers that don't support Web Share API
-            const textArea = document.createElement('textarea');
-            textArea.value = text + ' ' + window.location.href;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('Results copied to clipboard!');
-        }
-    }
-    
-    // Filter questions by subject
-    function filterQuestions(subject) {
-        currentFilter = subject;
-        
-        if (subject === 'all') {
-            filteredQuestions = [...testData];
-        } else {
-            filteredQuestions = testData.filter(q => q.subject === subject);
-        }
-        
-        currentQuestionIndex = 0;
-        displayQuestion(currentQuestionIndex);
-        updateQuestionGrid();
-        
-        // Update active subject button
-        subjectBtns.forEach(btn => {
-            if (btn.dataset.subject === subject) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
-    }
-    
-    // Event Listeners
-    startTestBtn.addEventListener('click', startTest);
-    
-    finishTestBtn.addEventListener('click', () => {
-        confirmationModal.classList.add('active');
-    });
-    
-    confirmFinish.addEventListener('click', finishTest);
-    
-    cancelFinish.addEventListener('click', () => {
-        confirmationModal.classList.remove('active');
-    });
-    
-    prevBtn.addEventListener('click', prevQuestion);
-    
-    nextBtn.addEventListener('click', nextQuestion);
-    
-    // Share button listeners
-    shareWhatsApp.addEventListener('click', shareToWhatsApp);
-    shareTelegram.addEventListener('click', shareToTelegram);
-    shareSnapchat.addEventListener('click', shareToSnapchat);
-    shareNative.addEventListener('click', nativeShare);
-    
-    // Stream input suggestions
-    userStream.addEventListener('input', function() {
-        if (this.value.length > 0) {
-            streamSuggestion.classList.add('show');
-        } else {
-            streamSuggestion.classList.remove('show');
-        }
-    });
-    
-    // Suggestion buttons
-    suggestionBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            userStream.value = this.dataset.stream;
-            streamSuggestion.classList.remove('show');
-            userStream.classList.add('auto-fill');
-            userStream.classList.add('highlight');
+            prevBtn.addEventListener('click', prevQuestion);
             
+            nextBtn.addEventListener('click', nextQuestion);
+            
+            // Share button listeners
+            shareWhatsApp.addEventListener('click', shareToWhatsApp);
+            shareTelegram.addEventListener('click', shareToTelegram);
+            shareSnapchat.addEventListener('click', shareToSnapchat);
+            shareNative.addEventListener('click', nativeShare);
+            
+            // Stream input suggestions
+            userStream.addEventListener('input', function() {
+                if (this.value.length > 0) {
+                    streamSuggestion.classList.add('show');
+                } else {
+                    streamSuggestion.classList.remove('show');
+                }
+            });
+            
+            // Suggestion buttons
+            suggestionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    userStream.value = this.dataset.stream;
+                    streamSuggestion.classList.remove('show');
+                    userStream.classList.add('auto-fill');
+                    userStream.classList.add('highlight');
+                    
+                    setTimeout(() => {
+                        userStream.classList.remove('highlight');
+                    }, 1500);
+                });
+            });
+            
+            // Subject filter buttons
+            subjectBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterQuestions(this.dataset.subject);
+                });
+            });
+            
+            // Language toggle
+            enBtn.addEventListener('click', function() {
+                enBtn.classList.add('active');
+                hiBtn.classList.remove('active');
+                // In a real app, you would change the language here
+            });
+            
+            hiBtn.addEventListener('click', function() {
+                hiBtn.classList.add('active');
+                enBtn.classList.remove('active');
+                // In a real app, you would change the language here
+            });
+            
+            // Initialize the app
+            initializeTestData();
+            
+            // Auto-fill demo data after a short delay
             setTimeout(() => {
-                userStream.classList.remove('highlight');
-            }, 1500);
+                userName.value = 'Khushi';
+                userStream.value = 'PCB';
+                
+                userName.classList.add('auto-fill');
+                userStream.classList.add('auto-fill');
+                
+                setTimeout(() => {
+                    userName.classList.remove('auto-fill');
+                    userStream.classList.remove('auto-fill');
+                }, 800);
+            }, 500);
         });
-    });
-    
-    // Subject filter buttons
-    subjectBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            filterQuestions(this.dataset.subject);
-        });
-    });
-    
-    // Language toggle (UPDATED FOR BILINGUAL SUPPORT)
-    enBtn.addEventListener('click', function() {
-        enBtn.classList.add('active');
-        hiBtn.classList.remove('active');
-        // Refresh current question with English
-        displayQuestion(currentQuestionIndex);
-    });
-    
-    hiBtn.addEventListener('click', function() {
-        hiBtn.classList.add('active');
-        enBtn.classList.remove('active');
-        // Refresh current question with Hindi
-        displayQuestion(currentQuestionIndex);
-    });
-    
-    // Initialize the app
-    initializeTestData();
-    
-    // Auto-fill demo data after a short delay
-    setTimeout(() => {
-        userName.value = 'Khushi';
-        userStream.value = 'PCB';
-        
-        userName.classList.add('auto-fill');
-        userStream.classList.add('auto-fill');
-        
-        setTimeout(() => {
-            userName.classList.remove('auto-fill');
-            userStream.classList.remove('auto-fill');
-        }, 800);
-    }, 500);
-});
-</script>
+    </script>
 </body>
 </html>
