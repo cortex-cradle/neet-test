@@ -138,6 +138,249 @@
         .toast.show { transform: translateX(-50%) translateY(0); opacity:1; }
         .toast i { color: var(--accent-1); font-size:18px; }
 
+        /* New styles for the cute typing effect and secret code */
+        .typing-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 6, 11, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .typing-container.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .typing-box {
+            background: var(--bg-2);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 30px 80px rgba(2, 6, 23, 0.8);
+            border: 1px solid rgba(185, 163, 255, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .typing-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        }
+
+        .typing-text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f1f7ff;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: var(--accent-1);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .secret-input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(185, 163, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e6eef8;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .secret-input:focus {
+            border-color: var(--accent-1);
+            box-shadow: 0 0 0 2px rgba(185, 163, 255, 0.2);
+        }
+
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff6b9d;
+            font-size: 20px;
+            opacity: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .success-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 6, 11, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .success-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-content {
+            background: var(--bg-2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(2, 6, 23, 0.8);
+            border: 1px solid rgba(185, 163, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b9d, #ff9a8b);
+        }
+
+        .success-icon {
+            font-size: 60px;
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .success-content h3 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            color: #f1f7ff;
+            background: linear-gradient(90deg, #ff6b9d, #ff9a8b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .success-content p {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 2s ease-out infinite;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        /* Wrong code animation */
+        .wrong-code {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
         /* Responsive adjustments */
         @media (min-width: 768px) {
             .top { flex-direction: row; }
@@ -155,6 +398,7 @@
             .card-content { flex-direction:column; }
             .series-card img { width:100%; height:120px; object-fit:cover; }
             .card-actions { flex-direction:column; }
+            .typing-text { font-size: 16px; }
         }
     </style>
 </head>
@@ -198,20 +442,20 @@
                                     <div class="meta-bottom">
                                         <div class="pill">120 Qs • 180 mins</div>
                                         <div class="small">
-                                            <span><i class="fa-regular fa-calendar"></i> 4 Oct </span>
-                                            <span><i class="fa-regular fa-clock"></i> 9:15 pm </span>
+                                            <span><i class="fa-regular fa-calendar"></i> 5 Oct </span>
+                                            <span><i class="fa-regular fa-clock"></i> 11:15 am </span>
                                             <span><strong>Marks:</strong> 720</span>
                                         </div>
                                     </div>
                                     <div class="details">
                                         <div class="item"><i class="fa-regular fa-clock"></i><strong>Duration:</strong> 3 hours</div>
-                                        <div class="item"><i class="fa-regular fa-calendar"></i><strong>Date:</strong> Sat, 4 Oct 2025 </div>
+                                        <div class="item"><i class="fa-regular fa-calendar"></i><strong>Date:</strong> Sun, 5 Oct 2025 </div>
                                         <div class="item"><i class="fa-solid fa-list-ol"></i><strong>Marks:</strong> 720</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-actions">
-                                <!-- Start button: now redirects to /home/neetmock.html after loading spinner -->
+                                <!-- Start button: now shows typing effect and secret code input -->
                                 <button class="btn-purple start" title="Start Test"><i class="fa-solid fa-play"></i> Start Test</button>
                                 <button class="btn-purple" id="view-info" title="Info"><i class="fa-solid fa-circle-info"></i></button>
                             </div>
@@ -283,6 +527,26 @@
         <span id="toast-text">Notification message</span>
     </div>
 
+    <!-- Cute Typing Effect -->
+    <div class="typing-container" id="typing-container">
+        <div class="typing-box">
+            <div class="typing-text" id="typing-text"></div>
+            <input type="text" class="secret-input" id="secret-input" placeholder="Enter the secret code..." autocomplete="off">
+            <button class="btn" id="submit-code">Submit</button>
+            <div class="hearts" id="hearts"></div>
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div class="success-popup" id="success-popup">
+        <div class="success-content">
+            <div class="success-icon">💖</div>
+            <h3>You're Amazing!</h3>
+            <p>You've unlocked the special test made just for you! Get ready to shine!</p>
+            <div class="sparkles" id="sparkles"></div>
+        </div>
+    </div>
+
     <script>
         // Show toast notification
         function showToast(message, duration = 3000) {
@@ -296,6 +560,51 @@
             toast._timeout = setTimeout(() => {
                 toast.classList.remove('show');
             }, duration);
+        }
+
+        // Typing effect function
+        function typeText(element, text, speed = 50) {
+            return new Promise(resolve => {
+                let i = 0;
+                element.innerHTML = '';
+                
+                function typeChar() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(typeChar, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                
+                typeChar();
+            });
+        }
+
+        // Create floating hearts
+        function createHearts(container, count = 15) {
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        // Create sparkles
+        function createSparkles(container, count = 20) {
+            for (let i = 0; i < count; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(sparkle);
+            }
         }
 
         // Handle card clicks
@@ -319,7 +628,7 @@
                     setTimeout(() => card.classList.remove('glow'), 800);
                 }
 
-                // if clicked start button (we handle redirect here)
+                // if clicked start button (we show typing effect here)
                 const startBtn = card.querySelector('.start');
                 if(e.target === startBtn || e.target.closest('.start')){
                     // Show loading effect on button
@@ -327,19 +636,36 @@
                     const originalHTML = button.innerHTML;
                     button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
                     button.disabled = true;
-                    // short delay to show spinner + toast, then redirect to /home/neetmock.html
+                    
+                    // Show typing effect after a short delay
                     setTimeout(() => {
-                        // Optional: show small toast before redirect
-                        showToast(`Starting "${name}" — All the best!`, 1200);
-                        // small delay so user sees toast for a moment, then redirect
-                        setTimeout(() => {
-                            // restore (not really necessary as we navigate away)
-                            button.disabled = false;
-                            button.innerHTML = originalHTML;
-                            // Redirect to the path requested by you
-                            window.location.href = '/neet-test/neetmock.html';
-                        }, 700);
-                    }, 700);
+                        const typingContainer = document.getElementById('typing-container');
+                        const typingText = document.getElementById('typing-text');
+                        const secretInput = document.getElementById('secret-input');
+                        const heartsContainer = document.getElementById('hearts');
+                        
+                        // Reset and show typing container
+                        typingText.innerHTML = '';
+                        secretInput.value = '';
+                        typingContainer.classList.add('show');
+                        
+                        // Create hearts
+                        heartsContainer.innerHTML = '';
+                        createHearts(heartsContainer);
+                        
+                        // Type the message
+                        const message = "Hmm... let's check if you're the one for whom this test was made?";
+                        typeText(typingText, message, 60).then(() => {
+                            // Focus on input after typing is done
+                            setTimeout(() => {
+                                secretInput.focus();
+                            }, 500);
+                        });
+                        
+                        // Restore button (though it's not visible now)
+                        button.disabled = false;
+                        button.innerHTML = originalHTML;
+                    }, 800);
 
                     return;
                 }
@@ -357,13 +683,52 @@
             });
         });
 
+        // Handle secret code submission
+        document.getElementById('submit-code').addEventListener('click', checkSecretCode);
+        document.getElementById('secret-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkSecretCode();
+            }
+        });
+
+        function checkSecretCode() {
+            const secretInput = document.getElementById('secret-input');
+            const code = secretInput.value.trim();
+            
+            if (code.toLowerCase() === "kscration18") {
+                // Correct code - show success popup
+                const typingContainer = document.getElementById('typing-container');
+                const successPopup = document.getElementById('success-popup');
+                const sparklesContainer = document.getElementById('sparkles');
+                
+                // Hide typing container
+                typingContainer.classList.remove('show');
+                
+                // Show success popup with sparkles
+                sparklesContainer.innerHTML = '';
+                createSparkles(sparklesContainer);
+                successPopup.classList.add('show');
+                
+                // Automatically redirect after 3 seconds
+                setTimeout(() => {
+                    // Redirect to the test page
+                    window.location.href = '/neet-test/neetmock.html';
+                }, 3000);
+            } else {
+                // Wrong code - show error with shake animation
+                secretInput.classList.add('wrong-code');
+                showToast("Oops! That's not the right code. Try again!", 2000);
+                setTimeout(() => {
+                    secretInput.classList.remove('wrong-code');
+                    secretInput.value = '';
+                    secretInput.focus();
+                }, 500);
+            }
+        }
+
         // Modal close functionality
         document.getElementById('modal-close').addEventListener('click', () => {
             document.getElementById('modal').classList.remove('open');
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape') document.getElementById('modal').classList.remove('open');
         });
 
         // Close modal when clicking outside
@@ -373,15 +738,12 @@
             }
         });
 
-        // Add touch effects to all buttons (mobile feel)
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('touchstart', () => {
-                button.style.transform = 'scale(0.98)';
-            });
-
-            button.addEventListener('touchend', () => {
-                button.style.transform = 'scale(1)';
-            });
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show welcome message
+            setTimeout(() => {
+                showToast("Welcome to NEET Prep! Select a test to begin.", 3000);
+            }, 1000);
         });
     </script>
 </body>
