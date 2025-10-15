@@ -16,6 +16,8 @@
             --card-bg: rgba(255, 255, 255, 0.02);
             --glass-border: rgba(255, 255, 255, 0.04);
             --shadow: 0 30px 80px rgba(2, 6, 23, 0.75);
+            --expired: #ff6b6b;
+            --study-bliss: #ff9a8b;
         }
 
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -81,10 +83,22 @@
             box-shadow:0 10px 40px rgba(2,6,23,0.65); position:relative; overflow:hidden; cursor:pointer; transition:all 0.3s ease; border:1px solid rgba(255,255,255,0.02);
         }
 
+        .series-card.expired {
+            border:1px solid rgba(255, 107, 107, 0.15);
+            box-shadow:0 30px 90px rgba(100, 10, 30, 0.4), 0 0 30px rgba(255, 107, 107, 0.04);
+            background: linear-gradient(180deg, rgba(255, 107, 107, 0.02), rgba(255, 107, 107, 0.01));
+        }
+
         .series-card.active {
             border:1px solid rgba(185,163,255,0.07);
             box-shadow:0 30px 90px rgba(20,10,40,0.7), 0 0 30px rgba(185,163,255,0.04);
             background: linear-gradient(180deg, rgba(185,163,255,0.02), rgba(217,183,255,0.01));
+        }
+
+        .series-card.study-bliss {
+            border:1px solid rgba(255, 154, 139, 0.15);
+            box-shadow:0 30px 90px rgba(150, 30, 60, 0.5), 0 0 30px rgba(255, 154, 139, 0.1);
+            background: linear-gradient(180deg, rgba(255, 154, 139, 0.05), rgba(255, 107, 157, 0.03));
         }
 
         .card-content { display:flex; gap:14px; align-items:flex-start; }
@@ -107,13 +121,40 @@
         .btn-purple { padding:14px 18px; border-radius:12px; background:linear-gradient(90deg, #c9b3ff, #e7d4ff); border:none; cursor:pointer; font-weight:700; color:#0b0720; box-shadow:0 10px 30px rgba(120,70,255,0.12); transition: all 0.3s ease; flex:1; display:flex; align-items:center; justify-content:center; gap:8px; font-size:16px; }
         .btn-purple:active { transform: scale(0.98); }
 
+        .btn-study-bliss {
+            padding:14px 18px; 
+            border-radius:12px; 
+            background:linear-gradient(90deg, #ff9a8b, #ff6b9d); 
+            border:none; 
+            cursor:pointer; 
+            font-weight:700; 
+            color:#fff; 
+            box-shadow:0 10px 30px rgba(255, 107, 157, 0.2); 
+            transition: all 0.3s ease; 
+            flex:1; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            gap:8px; 
+            font-size:16px;
+        }
+
+        .btn-study-bliss:active { transform: scale(0.98); }
+
         .ribbon { position:absolute; right:12px; top:12px; background: linear-gradient(90deg, var(--accent-1), var(--accent-2)); color:#07102a; padding:6px 10px; font-weight:600; border-radius:8px; font-size:12px; box-shadow:0 6px 18px rgba(145,95,255,0.08); z-index:3; overflow:hidden; }
+        .ribbon.expired { background: linear-gradient(90deg, var(--expired), #ff8e8e); }
+        .ribbon.study-bliss { background: linear-gradient(90deg, var(--study-bliss), #ff6b9d); }
         .ribbon::after { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-25deg); animation: badgeShine 3.5s infinite; }
         @keyframes badgeShine { 0%{left:-100%} 50%{left:150%} 100%{left:150%} }
 
         .series-card.active::after {
             content:''; position:absolute; top:0; left:-120%; width:40%; height:100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); transform:skewX(-12deg); filter: blur(6px); animation: wenShine 3s linear infinite; pointer-events:none; mix-blend-mode:screen;
         }
+
+        .series-card.study-bliss::after {
+            content:''; position:absolute; top:0; left:-120%; width:40%; height:100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transform:skewX(-12deg); filter: blur(6px); animation: wenShine 3s linear infinite; pointer-events:none; mix-blend-mode:screen;
+        }
+
         @keyframes wenShine { 0%{left:-120%} 50%{left:120%} 100%{left:120%} }
 
         .series-card.disabled { opacity:0.6; cursor:not-allowed; }
@@ -431,13 +472,13 @@
                     </div>
 
                     <div class="card-list">
-                        <!-- Active Card: NEET Full Mock Test -->
-                        <div class="series-card active" data-active="true" data-name="NEET Full Mock Test" id="neet-full">
-                            <div class="ribbon">fresher</div>
+                        <!-- Expired Card: NEET Full Mock Test -->
+                        <div class="series-card expired" data-active="false" data-name="NEET Full Mock Test" id="neet-full">
+                            <div class="ribbon expired">old</div>
                             <div class="card-content">
                                 <img src="https://quizizz.com/media/resource/gs/quizizz-media/quizzes/5104d3a8-fc99-4338-ba01-aa5965c63b98" alt="NEET Mock Test">
                                 <div class="series-meta">
-                                    <h3>NEET Full Mock Test <span style="font-size:12px; padding:4px 8px; background:rgba(185,163,255,0.15); color:var(--accent-1); border-radius:6px;">initializing</span></h3>
+                                    <h3>NEET Full Mock Test <span style="font-size:12px; padding:4px 8px; background:rgba(255, 107, 107, 0.15); color:var(--expired); border-radius:6px;">expired</span></h3>
                                     <p>Complete syllabus mock timed, detailed solutions</p>
                                     <div class="meta-bottom">
                                         <div class="pill">120 Qs • 180 mins</div>
@@ -503,6 +544,39 @@
                                         <div class="small"><i class="fa-solid fa-vial"></i> Coming soon</div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Study Bliss Card -->
+                        <div class="series-card study-bliss" data-active="true" data-name="Study Bliss Dashboard" id="study-bliss">
+                            <div class="ribbon study-bliss">Launch Today</div>
+                            <div class="card-content">
+                                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Study Bliss">
+                                <div class="series-meta">
+                                    <h3>Study Bliss Dashboard <span style="font-size:12px; padding:4px 8px; background:rgba(255, 154, 139, 0.15); color:var(--study-bliss); border-radius:6px;">new</span></h3>
+                                    <p>Personalized study tracker, schedule manager, and progress analytics</p>
+                                    <div class="meta-bottom">
+                                        <div class="pill">All Features • Unlimited</div>
+                                        <div class="small">
+                                            <span><i class="fa-regular fa-calendar"></i> Today </span>
+                                            <span><i class="fa-regular fa-clock"></i> Just Launched </span>
+                                            <span><strong>Free</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="details">
+                                        <div class="item"><i class="fa-solid fa-chart-line"></i><strong>Features:</strong> Progress Tracking, Schedule Management</div>
+                                        <div class="item"><i class="fa-regular fa-calendar"></i><strong>Launch Date:</strong> Today</div>
+                                        <div class="item"><i class="fa-solid fa-star"></i><strong>Status:</strong> Available Now</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-study-bliss" id="go-to-study-bliss">
+                                    <i class="fa-solid fa-rocket"></i> Launch Dashboard
+                                </button>
+                                <button class="btn-purple" id="go-to-personalized">
+                                    <i class="fa-solid fa-user"></i> Personalized
+                                </button>
                             </div>
                         </div>
 
@@ -614,7 +688,7 @@
                 const name = card.getAttribute('data-name') || 'This test';
 
                 // if disabled and not clicking on action buttons, show modal
-                if(!active && !e.target.closest('.btn-purple')){
+                if(!active && !e.target.closest('.btn-purple') && !e.target.closest('.btn-study-bliss')){
                     const modal = document.getElementById('modal');
                     const txt = document.getElementById('modal-text');
                     txt.textContent = `${name} is currently unavailable. It will be active soon.`;
@@ -736,6 +810,15 @@
             if (e.target === document.getElementById('modal')) {
                 document.getElementById('modal').classList.remove('open');
             }
+        });
+
+        // Study Bliss navigation
+        document.getElementById('go-to-study-bliss').addEventListener('click', () => {
+            window.location.href = '/study-bliss.html';
+        });
+
+        document.getElementById('go-to-personalized').addEventListener('click', () => {
+            window.location.href = '/personalized.html';
         });
 
         // Initialize
