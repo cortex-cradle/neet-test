@@ -190,6 +190,68 @@
             margin-bottom: 10px;
         }
         
+        .notification-item {
+            border-left: 3px solid #10b981;
+            padding-left: 10px;
+            margin-bottom: 10px;
+            background: rgba(16, 185, 129, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .notification-settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
         @media (max-width: 768px) {
             .card {
                 margin-bottom: 1rem;
@@ -362,6 +424,26 @@
                     </div>
                 </div>
                 
+                <!-- Notifications Section -->
+                <div class="card p-6 float-in">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Smart Reminders</h2>
+                        <button id="notification-settings" class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm hover:bg-purple-200 transition-colors">
+                            <i class="fas fa-cog mr-1"></i> Settings
+                        </button>
+                    </div>
+                    
+                    <div id="notifications-container" class="space-y-3 max-h-60 overflow-y-auto">
+                        <!-- Notifications will be loaded here -->
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <button id="test-notification" class="px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-full text-sm font-medium transition-all hover:scale-105">
+                            <i class="fas fa-bell mr-2"></i> Test Notification
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Motivational Quote -->
                 <div class="card p-6 text-center float-in">
                     <h2 class="text-xl font-semibold text-gray-800 mb-3">Daily Motivation</h2>
@@ -478,7 +560,273 @@
         </div>
     </div>
 
+    <div id="notification-settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">Notification Settings</h3>
+                <button id="close-notification-settings" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="notification-settings-item">
+                    <div>
+                        <h4 class="font-medium text-gray-800">Morning Study Reminder</h4>
+                        <p class="text-sm text-gray-600">8:00 AM - Time to start your study session!</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="morning-reminder" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="notification-settings-item">
+                    <div>
+                        <h4 class="font-medium text-gray-800">Afternoon Study Reminder</h4>
+                        <p class="text-sm text-gray-600">2:00 PM - PW Coaching time!</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="afternoon-reminder" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="notification-settings-item">
+                    <div>
+                        <h4 class="font-medium text-gray-800">Evening Study Reminder</h4>
+                        <p class="text-sm text-gray-600">7:00 PM - Revision time!</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="evening-reminder" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="notification-settings-item">
+                    <div>
+                        <h4 class="font-medium text-gray-800">Night Study Reminder</h4>
+                        <p class="text-sm text-gray-600">10:00 PM - Last study session!</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="night-reminder" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="notification-settings-item">
+                    <div>
+                        <h4 class="font-medium text-gray-800">Motivational Quotes</h4>
+                        <p class="text-sm text-gray-600">Daily motivational messages</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="motivational-quotes" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="mt-6">
+                    <button id="save-notification-settings" class="w-full py-2 bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded-md font-medium transition-all hover:scale-105">
+                        Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Notification System
+        function initializeNotificationSystem() {
+            let notifications = JSON.parse(localStorage.getItem('neetNotifications')) || [];
+            let notificationSettings = JSON.parse(localStorage.getItem('neetNotificationSettings')) || {
+                morningReminder: true,
+                afternoonReminder: true,
+                eveningReminder: true,
+                nightReminder: true,
+                motivationalQuotes: true
+            };
+            
+            // Fixed notification times (in 24-hour format)
+            const notificationTimes = [
+                { time: "08:00", type: "morning", message: "🌅 Good morning! Time to start your study session. Remember: Consistency is key to NEET success!" },
+                { time: "14:00", type: "afternoon", message: "📚 Afternoon study time! PW Coaching starts soon. Get ready to learn!" },
+                { time: "19:00", type: "evening", type: "evening", message: "🌙 Evening revision time! Review what you learned today to strengthen your concepts." },
+                { time: "22:00", type: "night", message: "💫 Last study session of the day! Make it count. Tomorrow's success depends on today's efforts." }
+            ];
+            
+            // Motivational quotes for random notifications
+            const motivationalQuotes = [
+                "🚀 Your future self will thank you for the hard work you're putting in today!",
+                "💪 Every minute you study brings you closer to your dream medical college!",
+                "🌟 Small daily improvements lead to stunning results. Keep going!",
+                "📖 The pain of studying is temporary, but the pride of becoming a doctor is forever!",
+                "🎯 Stay focused! Your NEET goal is closer than you think!",
+                "🔥 Don't watch the clock; do what it does. Keep going!",
+                "🌈 Difficult roads often lead to beautiful destinations. Keep studying!",
+                "⚡ You are capable of amazing things. Believe in yourself!"
+            ];
+            
+            function renderNotifications() {
+                const container = document.getElementById('notifications-container');
+                container.innerHTML = '';
+                
+                // Show latest 5 notifications
+                const recentNotifications = notifications.slice(-5).reverse();
+                
+                if (recentNotifications.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No notifications yet. Notifications will appear here at scheduled times.</p>';
+                    return;
+                }
+                
+                recentNotifications.forEach(notification => {
+                    const notificationElement = document.createElement('div');
+                    notificationElement.className = 'notification-item';
+                    notificationElement.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-800">${notification.message}</div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <i class="fas fa-clock mr-1"></i>${formatTime(new Date(notification.timestamp))}
+                                </div>
+                            </div>
+                            <button class="delete-notification text-gray-400 hover:text-gray-600 ml-2" data-id="${notification.id}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(notificationElement);
+                });
+                
+                // Add event listeners for delete buttons
+                document.querySelectorAll('.delete-notification').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const notificationId = this.getAttribute('data-id');
+                        notifications = notifications.filter(n => n.id !== notificationId);
+                        localStorage.setItem('neetNotifications', JSON.stringify(notifications));
+                        renderNotifications();
+                    });
+                });
+            }
+            
+            function addNotification(message, type = 'info') {
+                const newNotification = {
+                    id: Date.now(),
+                    message: message,
+                    type: type,
+                    timestamp: new Date().toISOString()
+                };
+                
+                notifications.push(newNotification);
+                localStorage.setItem('neetNotifications', JSON.stringify(notifications));
+                
+                // Show browser notification if permitted
+                if (Notification.permission === 'granted') {
+                    new Notification('Study Bliss Reminder', {
+                        body: message,
+                        icon: '/favicon.ico'
+                    });
+                }
+                
+                // Show in-app notification
+                showNotification(message, 'info');
+                
+                // Update notifications display
+                renderNotifications();
+            }
+            
+            function checkScheduledNotifications() {
+                const now = new Date();
+                const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                // Check fixed time notifications
+                notificationTimes.forEach(notification => {
+                    if (currentTime === notification.time) {
+                        // Check if notification is enabled in settings
+                        const settingKey = `${notification.type}Reminder`;
+                        if (notificationSettings[settingKey]) {
+                            // Check if we've already shown this notification today
+                            const today = now.toDateString();
+                            const notificationKey = `${today}-${notification.time}`;
+                            const alreadyShown = localStorage.getItem(notificationKey);
+                            
+                            if (!alreadyShown) {
+                                addNotification(notification.message, 'reminder');
+                                localStorage.setItem(notificationKey, 'true');
+                            }
+                        }
+                    }
+                });
+                
+                // Random motivational quotes (10% chance every 5 minutes)
+                if (notificationSettings.motivationalQuotes && Math.random() < 0.1) {
+                    const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+                    const quoteKey = `quote-${now.toDateString()}-${now.getHours()}`;
+                    const alreadyShown = localStorage.getItem(quoteKey);
+                    
+                    if (!alreadyShown) {
+                        addNotification(randomQuote, 'motivation');
+                        localStorage.setItem(quoteKey, 'true');
+                    }
+                }
+            }
+            
+            function initializeNotificationSettings() {
+                // Load settings
+                document.getElementById('morning-reminder').checked = notificationSettings.morningReminder;
+                document.getElementById('afternoon-reminder').checked = notificationSettings.afternoonReminder;
+                document.getElementById('evening-reminder').checked = notificationSettings.eveningReminder;
+                document.getElementById('night-reminder').checked = notificationSettings.nightReminder;
+                document.getElementById('motivational-quotes').checked = notificationSettings.motivationalQuotes;
+                
+                // Request notification permission
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            }
+            
+            function saveNotificationSettings() {
+                notificationSettings = {
+                    morningReminder: document.getElementById('morning-reminder').checked,
+                    afternoonReminder: document.getElementById('afternoon-reminder').checked,
+                    eveningReminder: document.getElementById('evening-reminder').checked,
+                    nightReminder: document.getElementById('night-reminder').checked,
+                    motivationalQuotes: document.getElementById('motivational-quotes').checked
+                };
+                
+                localStorage.setItem('neetNotificationSettings', JSON.stringify(notificationSettings));
+                showNotification('Notification settings saved!', 'success');
+            }
+            
+            // Event listeners
+            document.getElementById('notification-settings').addEventListener('click', () => {
+                document.getElementById('notification-settings-modal').style.display = 'flex';
+            });
+            
+            document.getElementById('close-notification-settings').addEventListener('click', () => {
+                document.getElementById('notification-settings-modal').style.display = 'none';
+            });
+            
+            document.getElementById('save-notification-settings').addEventListener('click', saveNotificationSettings);
+            
+            document.getElementById('test-notification').addEventListener('click', () => {
+                addNotification('🧪 This is a test notification! Your reminder system is working perfectly.', 'test');
+            });
+            
+            // Initialize
+            initializeNotificationSettings();
+            renderNotifications();
+            
+            // Check for notifications every minute
+            setInterval(checkScheduledNotifications, 60000);
+            
+            // Check immediately on load
+            setTimeout(checkScheduledNotifications, 2000);
+        }
+        
+        // Helper function to format time
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+
         // Days Counter Calculation
         function updateDaysCounter() {
             const neetDate = new Date('May 3, 2026');
@@ -1204,7 +1552,9 @@
             // Create notification element
             const notification = document.createElement('div');
             notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
-                type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                type === 'success' ? 'bg-green-100 text-green-800' : 
+                type === 'error' ? 'bg-red-100 text-red-800' : 
+                'bg-blue-100 text-blue-800'
             }`;
             notification.textContent = message;
             
@@ -1228,6 +1578,7 @@
             setupCustomizationPanel();
             initializeCalendar();
             initializeHistoryManager();
+            initializeNotificationSystem();
             
             // Add float-in animation delays
             document.querySelectorAll('.float-in').forEach((el, index) => {
